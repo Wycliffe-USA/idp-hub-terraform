@@ -10,6 +10,7 @@ locals {
   mysql_user              = "root"
   parameter_path          = "/${var.app_name}/${var.app_env}"
   database_engine_version = "10.6"
+  cloudflare_tags         = [for k, v in local.tags : "${k}:${v}"]
   tags = {
     managed_by        = "terraform"
     workspace         = terraform.workspace
@@ -91,7 +92,7 @@ resource "cloudflare_dns_record" "intermediate" {
   content = module.app.alb_dns_name
   type    = "CNAME"
   comment = "intermediate record - DO NOT change this"
-  tags    = var.dns_record_tags
+  tags    = var.enable_dns_record_tags ? local.cloudflare_tags : null
   proxied = var.enable_cloudflare_proxy
   ttl     = 1
 }
@@ -112,7 +113,7 @@ resource "cloudflare_dns_record" "public" {
   content = cloudflare_dns_record.intermediate.name
   type    = "CNAME"
   comment = "public record - this can be changed for failover"
-  tags    = var.dns_record_tags
+  tags    = var.enable_dns_record_tags ? local.cloudflare_tags : null
   proxied = var.enable_cloudflare_proxy
   ttl     = 1
 }

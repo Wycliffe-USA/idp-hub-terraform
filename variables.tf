@@ -320,16 +320,16 @@ variable "delete_recovery_point_after_days" {
  * Cloudflare configuration
  */
 
-variable "dns_record_tags" {
-  description = "Tags for the Cloudflare DNS records, e.g. [\"managed_by:terraform\", \"repo:idp-hub-terraform\"]. Not supported on the Cloudflare Free plan."
-  type        = list(string)
-  default     = null
-}
-
 variable "enable_cloudflare_proxy" {
   description = "Enable the Cloudflare proxy service on the CAM DNS record"
   type        = bool
   default     = true
+}
+
+variable "enable_dns_record_tags" {
+  description = "Add the AWS tags (managed_by, workspace, itse_app_*) as Cloudflare tags on the DNS records"
+  type        = bool
+  default     = false
 }
 
 variable "use_cloudflare_security_group" {
