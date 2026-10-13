@@ -10,6 +10,7 @@ locals {
   mysql_user              = "root"
   parameter_path          = "/${var.app_name}/${var.app_env}"
   database_engine_version = "10.6"
+  cloudflare_tags         = [for k, v in local.tags : "${k}:${v}"]
   tags = {
     managed_by        = "terraform"
     workspace         = terraform.workspace
@@ -45,7 +46,7 @@ module "app" {
   alarm_actions_enabled        = var.alarm_actions_enabled
   ssh_key_name                 = var.ssh_key_name
   aws_zones                    = var.aws_zones
-  default_cert_domain_name     = "*.${var.cloudflare_domain}"
+  default_cert_domain_name     = var.cert_domain_name != "" ? var.cert_domain_name : "*.${var.cloudflare_domain}"
   create_adminer               = true
   enable_adminer               = var.enable_adminer
   adminer_require_totp         = var.adminer_require_totp
@@ -91,6 +92,7 @@ resource "cloudflare_dns_record" "intermediate" {
   content = module.app.alb_dns_name
   type    = "CNAME"
   comment = "intermediate record - DO NOT change this"
+  tags    = var.enable_dns_record_tags ? local.cloudflare_tags : null
   proxied = var.enable_cloudflare_proxy
   ttl     = 1
 }
@@ -111,6 +113,7 @@ resource "cloudflare_dns_record" "public" {
   content = cloudflare_dns_record.intermediate.name
   type    = "CNAME"
   comment = "public record - this can be changed for failover"
+  tags    = var.enable_dns_record_tags ? local.cloudflare_tags : null
   proxied = var.enable_cloudflare_proxy
   ttl     = 1
 }

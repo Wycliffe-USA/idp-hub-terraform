@@ -153,6 +153,12 @@ variable "theme_color_scheme" {
  * DNS configuration
  */
 
+variable "cert_domain_name" {
+  description = "Domain name of an existing ACM certificate to use for the ALB, e.g. \"*.login.example.com\". Leave empty to use \"*.<cloudflare_domain>\"."
+  type        = string
+  default     = ""
+}
+
 variable "cloudflare_domain" {
   description = "The domain name on which to host the app. Combined with \"subdomain\" to create an ALB listener rule. Also used for the optional DNS record."
   type        = string
@@ -318,6 +324,12 @@ variable "enable_cloudflare_proxy" {
   description = "Enable the Cloudflare proxy service on the CAM DNS record"
   type        = bool
   default     = true
+}
+
+variable "enable_dns_record_tags" {
+  description = "Add the AWS tags (managed_by, workspace, itse_app_*) as Cloudflare tags on the DNS records"
+  type        = bool
+  default     = false
 }
 
 variable "use_cloudflare_security_group" {
