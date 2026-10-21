@@ -23,7 +23,7 @@ locals {
 
 module "app" {
   source  = "sil-org/ecs-app/aws"
-  version = "~> 1.2"
+  version = "~> 1.3"
 
   app_env                      = local.app_env
   app_name                     = var.app_name
@@ -66,6 +66,10 @@ module "app" {
   transit_gateway_id                              = var.transit_gateway_id
   transit_gateway_default_route_table_association = var.transit_gateway_default_route_table_association
   transit_gateway_default_route_table_propagation = var.transit_gateway_default_route_table_propagation
+
+  private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
+  public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
+  vpc_cidr_block             = var.vpc_cidr_block
 
   health_check = {
     matcher = "302,303"
