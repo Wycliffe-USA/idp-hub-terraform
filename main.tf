@@ -22,8 +22,8 @@ locals {
 }
 
 module "app" {
-  source  = "sil-org/ecs-app/aws"
-  version = "~> 1.3"
+  source = "sil-org/ecs-app/aws"
+  version = "~> 1.4"
 
   app_env                      = local.app_env
   app_name                     = var.app_name

@@ -1,6 +1,6 @@
 terraform {
   cloud {
-    organization = "gtis"
+    organization = "Wycliffe-USA"
     workspaces {
       tags = ["app:idp-hub"]
     }
