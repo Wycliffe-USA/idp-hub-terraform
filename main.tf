@@ -60,6 +60,7 @@ module "app" {
 
   database_auto_minor_version_upgrade = true
   database_engine_version             = local.database_engine_version
+  database_instance_class             = var.database_instance_class
   database_parameter_group_name       = aws_db_parameter_group.this.name
 
   use_transit_gateway                             = var.use_transit_gateway

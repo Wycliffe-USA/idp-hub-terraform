@@ -86,6 +86,12 @@ variable "require_secure_transport" {
   default     = false
 }
 
+variable "database_instance_class" {
+  description = "The instance class of the RDS instance (for example, db.t4g.micro)."
+  type        = string
+  default     = "db.t4g.micro"
+}
+
 
 /*
  * Task definition configuration
